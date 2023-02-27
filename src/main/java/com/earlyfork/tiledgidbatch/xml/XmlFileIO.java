@@ -37,15 +37,18 @@ public class XmlFileIO {
 
     }
 
-    public void saveTMXFiles(Document doc) throws TransformerException {
-        //Then save the Document back to the file...
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+    public void saveTMXFiles(ArrayList<Document> documents) throws TransformerException {
 
-        DOMSource domSource = new DOMSource(doc);
-        StreamResult sr = new StreamResult(new File("Hae-Catacombs01.tmx"));
-        transformer.transform(domSource, sr);
+        for (Document doc : documents) {
+            //Then save the Document back to the file...
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+            DOMSource domSource = new DOMSource(doc);
+            StreamResult sr = new StreamResult(new File("Hae-Catacombs01.tmx"));
+            transformer.transform(domSource, sr);
+        }
     }
 }

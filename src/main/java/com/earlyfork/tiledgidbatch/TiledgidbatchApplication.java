@@ -29,13 +29,12 @@ public class TiledgidbatchApplication implements CommandLineRunner {
         ArrayList<Document> documents = xmlFileIO.readInTMXFiles();
 
 
-        Document doc = documents.get(0);
 
         //update
-        globalIDController.updateGlobalId(doc);
+        globalIDController.updateGlobalIds(documents);
 
 
-        xmlFileIO.saveTMXFiles(doc);
+        xmlFileIO.saveTMXFiles(documents);
 
     }
 }

@@ -8,11 +8,23 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.util.ArrayList;
 
 @Component
 public class GlobalIDController {
 
-    public void updateGlobalId(Document doc) {
+    int runningGIDTotal = 0;
+
+    public void updateGlobalIds(ArrayList<Document> docs) {
+        int startingGID = 1;
+        for (Document doc : docs) {
+            this.updateGlobalId(doc, startingGID);
+            startingGID += 10000;
+        }
+
+    }
+
+    private void updateGlobalId(Document doc, int startingGID) {
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         Node startDateNode = null;
@@ -23,8 +35,12 @@ public class GlobalIDController {
         }
 
         Node firstgid = startDateNode.getAttributes().getNamedItem("firstgid");
-        firstgid.setNodeValue("1b");
+        firstgid.setNodeValue(String.valueOf(startingGID));
         startDateNode.getAttributes().setNamedItem(firstgid);
+    }
+
+    public void resetForNewFile() {
+        runningGIDTotal = 0;
     }
 
 }
