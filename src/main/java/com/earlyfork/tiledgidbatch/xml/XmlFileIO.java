@@ -16,21 +16,26 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 @Component
 public class XmlFileIO {
-    public ArrayList<Document> readInTMXFiles() {
+    public ArrayList<Document> readInTMXFiles(Collection<File> tmxFiles) {
+
         //read
         ArrayList<Document> listOfTMXFilesAsDocs = new ArrayList<>();
-        try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document doc = documentBuilder.parse(new File("Hae-Catacombs01.tmx"));
-            listOfTMXFilesAsDocs.add(doc);
-        } catch (SAXException e) {
-            throw new RuntimeException(e);
-        } catch (IOException | ParserConfigurationException e) {
-            throw new RuntimeException(e);
+
+        for (File file : tmxFiles) {
+            try {
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document doc = documentBuilder.parse(file);
+                listOfTMXFilesAsDocs.add(doc);
+            } catch (SAXException e) {
+                throw new RuntimeException(e);
+            } catch (IOException | ParserConfigurationException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         return listOfTMXFilesAsDocs;
