@@ -40,12 +40,12 @@ public class GlobalIDController {
         }
 
         int runningGIDTotal = startingGID;
-        for (int i = 0; i <= nodeListToUpdate.getLength(); i++) {
+        for (int i = 0; i < nodeListToUpdate.getLength(); i++) {
 
             if (nodeListToUpdate.item(i) == null) {
                 continue;
             }
-            this.updateNode(nodeListToUpdate.item(i), startingGID);
+            this.updateNode(nodeListToUpdate.item(i), runningGIDTotal);
             runningGIDTotal += 10000;
         }
 
