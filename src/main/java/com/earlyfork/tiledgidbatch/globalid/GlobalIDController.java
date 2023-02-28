@@ -48,15 +48,7 @@ public class GlobalIDController {
             this.updateNode(nodeListToUpdate.item(i), runningGIDTotal);
             runningGIDTotal += 10000;
         }
-
-
-//        // Update all siblings
-//        int runningGIDTotal = startingGID;
-//        while (startDateNode.getNextSibling() != null) {
-//            Node nextSibling = startDateNode.getNextSibling();
-//
-//            this.updateNode(nextSibling, runningGIDTotal);
-//        }
+        
     }
 
     private void updateNode(Node node, int gidValue) {
