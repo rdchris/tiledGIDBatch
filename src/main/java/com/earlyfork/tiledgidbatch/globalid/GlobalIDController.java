@@ -11,6 +11,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 @Component
 public class GlobalIDController {
@@ -23,10 +24,14 @@ public class GlobalIDController {
 
     public void updateGlobalIds(ArrayList<Document> docs) {
 
+        LinkedList<TilesetChangeset> tilesetChangesetLinkedList = new LinkedList<TilesetChangeset>();
+
         for (Document doc : docs) {
             this.updateGlobalIdsInDoc(doc);
             runningTotalGID += globalIdIncrement;
         }
+
+        nodesController.updateDataNodes(doc, oldNodeValue, nextTileSetGID, runningTotalGID);
 
     }
 
@@ -56,12 +61,12 @@ public class GlobalIDController {
             this.updateNode(nodeListToUpdate.item(i), runningTotalGID);
 
             String nextTileSetGID = null;
-            if (nodeListToUpdate.item(i+1) != null) {
-                nextTileSetGID = this.getFirstGidNodeValue(nodeListToUpdate.item(i+1));
+            if (nodeListToUpdate.item(i + 1) != null) {
+                nextTileSetGID = this.getFirstGidNodeValue(nodeListToUpdate.item(i + 1));
             } else {
                 nextTileSetGID = "4294967295";
             }
-            nodesController.updateDataNodes(doc,oldNodeValue,nextTileSetGID,runningTotalGID);
+
             runningTotalGID += globalIdIncrement;
         }
 
