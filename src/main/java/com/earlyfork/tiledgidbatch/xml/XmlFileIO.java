@@ -42,18 +42,34 @@ public class XmlFileIO {
 
     }
 
-    public void saveTMXFiles(ArrayList<Document> documents) throws TransformerException {
+    public void saveTMXFiles(Collection<File> tmxFiles, ArrayList<Document> documents) throws TransformerException {
 
-        for (Document doc : documents) {
+        // Array list of TMX file
+        ArrayList<File> fileArrayList = new ArrayList<>();
+        fileArrayList.addAll(tmxFiles);
+
+        // Array list of XML documents
+        ArrayList<Document> xmlDocumentArrayList = new ArrayList<>();
+        xmlDocumentArrayList.addAll(documents);
+
+        if (xmlDocumentArrayList.size() != fileArrayList.size()) {
+            System.out.println("CRITICAL ERROR!!! ArrayLists on FileSave do not match! Sizes are");
+            System.out.println("fileArraylist.size() : " + fileArrayList.size());
+            System.out.println("xmlDocumentArrayList.size() : " + xmlDocumentArrayList.size());
+        }
+        // using for i to access both arraylists of the same index
+        for (int i = 0; i < fileArrayList.size(); i++) {
             //Then save the Document back to the file...
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
-            DOMSource domSource = new DOMSource(doc);
-            StreamResult sr = new StreamResult(new File("Hae-Catacombs01.tmx"));
+            DOMSource domSource = new DOMSource(xmlDocumentArrayList.get(i));
+            StreamResult sr = new StreamResult(fileArrayList.get(i));
+
             transformer.transform(domSource, sr);
         }
+
     }
 }

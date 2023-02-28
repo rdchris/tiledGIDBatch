@@ -43,7 +43,7 @@ public class TiledgidbatchApplication implements CommandLineRunner {
         globalIDController.updateGlobalIds(documents);
 
         // save files
-        xmlFileIO.saveTMXFiles(documents);
+        xmlFileIO.saveTMXFiles(tmxFiles,documents);
 
     }
 }
