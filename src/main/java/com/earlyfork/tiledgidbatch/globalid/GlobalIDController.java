@@ -13,18 +13,17 @@ import java.util.ArrayList;
 @Component
 public class GlobalIDController {
 
-    int runningGIDTotal = 0;
 
     public void updateGlobalIds(ArrayList<Document> docs) {
         int startingGID = 1;
         for (Document doc : docs) {
-            this.updateGlobalId(doc, startingGID);
+            this.updateGlobalIdsInDoc(doc, startingGID);
             startingGID += 10000;
         }
 
     }
 
-    private void updateGlobalId(Document doc, int startingGID) {
+    private void updateGlobalIdsInDoc(Document doc, int startingGID) {
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         Node startDateNode = null;
@@ -39,13 +38,22 @@ public class GlobalIDController {
             return;
         }
 
-        Node firstgid = startDateNode.getAttributes().getNamedItem("firstgid");
-        firstgid.setNodeValue(String.valueOf(startingGID));
-        startDateNode.getAttributes().setNamedItem(firstgid);
+        this.updateNode(startDateNode, startingGID);
+
+        // Update all siblings
+        int runningGIDTotal = startingGID;
+        while (startDateNode.getNextSibling() != null) {
+            Node nextSibling = startDateNode.getNextSibling();
+            runningGIDTotal += 10000;
+            this.updateNode(nextSibling, runningGIDTotal);
+        }
     }
 
-    public void resetForNewFile() {
-        runningGIDTotal = 0;
+    private void updateNode(Node node, int gidValue) {
+        Node firstgid = node.getAttributes().getNamedItem("firstgid");
+        firstgid.setNodeValue(String.valueOf(gidValue));
+        node.getAttributes().setNamedItem(firstgid);
     }
+
 
 }
