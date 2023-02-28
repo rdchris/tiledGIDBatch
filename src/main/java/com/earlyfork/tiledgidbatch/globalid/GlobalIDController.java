@@ -34,6 +34,11 @@ public class GlobalIDController {
             throw new RuntimeException(e);
         }
 
+        if (startDateNode == null) {
+            System.out.println("No tileset node found for " + doc.getDocumentURI());
+            return;
+        }
+
         Node firstgid = startDateNode.getAttributes().getNamedItem("firstgid");
         firstgid.setNodeValue(String.valueOf(startingGID));
         startDateNode.getAttributes().setNamedItem(firstgid);
