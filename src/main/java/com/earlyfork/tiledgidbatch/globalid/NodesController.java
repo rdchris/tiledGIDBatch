@@ -37,11 +37,13 @@ public class NodesController {
         // parse through all Data nodes
         for (int i = 0; i < nodeListToUpdate.getLength(); i++) {
             String nodeValue = nodeListToUpdate.item(i).getChildNodes().item(i).getNodeValue();
-            String[] splitDataValue = nodeValue.split(",");
 
             // determine how where the '/n' s need to go
+            String[] splitDataValue = nodeValue.split(",");
             int rowLengthFoData = this.countRowLengthOfData(splitDataValue);
 
+            // resplit, this time ripping out the \n as they will blow up integer parsing
+            splitDataValue = nodeValue.replace("\n", "").split(",");
             Boolean[] booleanArray = new Boolean[splitDataValue.length];
 
             for (int ii = 0; ii < splitDataValue.length; ii++) {
@@ -73,8 +75,8 @@ public class NodesController {
 
             }
 
-            String newNodeValue = this.convertStringArrayBackIntoNodeValue(splitDataValue);
-
+            // puts the /n's back and appends the byte array back into a string
+            String newNodeValue = this.convertStringArrayBackIntoNodeValue(splitDataValue, rowLengthFoData);
 
             // modify the node
             nodeListToUpdate.item(i).getChildNodes().item(i).setNodeValue(newNodeValue);
@@ -86,11 +88,43 @@ public class NodesController {
 
     }
 
-    private String convertStringArrayBackIntoNodeValue(String[] splitDataValue) {
-        StringBuilder sb = new StringBuilder();
-        for (String s : splitDataValue) {
-            sb.append(s).append(",");
+    private int countRowLengthOfData(String[] splitDataValue) {
+        boolean foundFirstEntry = false;
+        for (int i = 0; i < splitDataValue.length; i++) {
+            if (splitDataValue[i].contains("\n")) {
+                if (foundFirstEntry == false) {
+                    foundFirstEntry = true;
+                } else {
+                    // We found the second /n! this is how long the rows are!
+                    return i;
+                }
+            }
         }
+        throw new RuntimeException("Could not find second \n in data node for " + splitDataValue.toString());
+    }
+
+    private String convertStringArrayBackIntoNodeValue(String[] splitDataValue, int rowLengthFoData) {
+        // the very first time we need to add a new row
+        boolean addNewRow = true;
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < splitDataValue.length; i++) {
+
+            if (addNewRow) {
+                sb.append("\n");
+                addNewRow = false;
+            }
+
+            sb.append(splitDataValue[i]).append(",");
+
+            // If every 17th row we need a new line, then if the index is mod 17
+            // aka 17, 34 then add a new line
+            if (i % rowLengthFoData == 0) {
+                sb.append("\n");
+            }
+        }
+
         return sb.toString();
     }
 
