@@ -46,10 +46,11 @@ public class TiledgidbatchApplication implements CommandLineRunner {
         // Grab all TMX files
         ArrayList<Document> documents = xmlFileIO.readInTMXFiles(tmxFiles);
 
-        //update GIDs
+        //update FirstGIDs
         Map<String, LinkedList<TilesetChangeset>> tilesetChangesets = globalIDController.updateGlobalIds(documents);
 
-        //nodesController.updateDataNodes(documents,tilesetChangesets);
+        //update data values
+        nodesController.updateDataNodes(documents,tilesetChangesets);
 
         // save files
         xmlFileIO.saveTMXFiles(tmxFiles,documents);

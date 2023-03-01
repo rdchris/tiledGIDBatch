@@ -68,7 +68,7 @@ public class GlobalIDController {
             if (nodeListToUpdate.item(i + 1) != null) {
                 nextTileSetGID = this.getFirstGidNodeValue(nodeListToUpdate.item(i + 1));
             } else {
-                nextTileSetGID = "4294967295";
+                nextTileSetGID = "2147483647";
             }
 
 

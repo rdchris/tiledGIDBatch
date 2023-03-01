@@ -17,6 +17,6 @@ public class TilesetChangeset {
     }
 
     public int getGidDelta() {
-        return newFirstGidValue - oldnextGid;
+        return newFirstGidValue - newFirstGidValue;
     }
 }
