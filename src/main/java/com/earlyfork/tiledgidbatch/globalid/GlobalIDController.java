@@ -23,20 +23,20 @@ public class GlobalIDController {
     @Autowired
     NodesController nodesController;
 
-    public void updateGlobalIds(ArrayList<Document> docs) {
+    public LinkedList<TilesetChangeset> updateGlobalIds(ArrayList<Document> docs) {
 
-
+        LinkedList<TilesetChangeset> tilesetChangesetLinkedList = new LinkedList<TilesetChangeset>();
 
         for (Document doc : docs) {
-            this.updateGlobalIdsInDoc(doc);
+            this.updateGlobalIdsInDoc(doc, tilesetChangesetLinkedList);
             runningTotalGID += globalIdIncrement;
         }
 
-        //nodesController.updateDataNodes(doc, oldNodeValue, nextTileSetGID, runningTotalGID);
+        return tilesetChangesetLinkedList;
 
     }
 
-    private void updateGlobalIdsInDoc(Document doc) {
+    private void updateGlobalIdsInDoc(Document doc, LinkedList<TilesetChangeset> tilesetChangesetLinkedList) {
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         NodeList nodeListToUpdate = null;
@@ -67,6 +67,10 @@ public class GlobalIDController {
             } else {
                 nextTileSetGID = "4294967295";
             }
+
+            // saving off this change
+            TilesetChangeset tilesetChangeset = new TilesetChangeset(Integer.valueOf(oldNodeValue), Integer.valueOf(nextTileSetGID), runningTotalGID);
+            tilesetChangesetLinkedList.add(tilesetChangeset);
 
             runningTotalGID += globalIdIncrement;
         }

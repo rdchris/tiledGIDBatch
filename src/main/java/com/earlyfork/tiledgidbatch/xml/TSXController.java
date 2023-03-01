@@ -10,7 +10,7 @@ import java.util.LinkedList;
 @Data
 public class TSXController {
 
-    LinkedList<TilesetChangeset> tilesetChangesetLinkedList = new LinkedList<TilesetChangeset>();
+
 
 
 }

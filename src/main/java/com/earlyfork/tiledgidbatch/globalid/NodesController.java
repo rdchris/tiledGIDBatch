@@ -1,5 +1,6 @@
 package com.earlyfork.tiledgidbatch.globalid;
 
+import com.earlyfork.tiledgidbatch.pojos.TilesetChangeset;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -8,12 +9,14 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.util.LinkedList;
 
 @Component
 public class NodesController {
 
 
-    public void updateDataNodes(Document doc, String oldNodeValue, String nextTileSetGID, int runningTotalGID) {
+    public void updateDataNodes(Document doc, LinkedList<TilesetChangeset> tilesetChangesets) {
+
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         NodeList nodeListToUpdate = null;
