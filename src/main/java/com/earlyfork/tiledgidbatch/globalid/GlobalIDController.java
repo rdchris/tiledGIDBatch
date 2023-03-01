@@ -1,6 +1,7 @@
 package com.earlyfork.tiledgidbatch.globalid;
 
 
+import com.earlyfork.tiledgidbatch.pojos.TilesetChangeset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -13,6 +14,8 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 @Component
 public class GlobalIDController {
