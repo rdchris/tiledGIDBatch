@@ -1,6 +1,6 @@
 package com.earlyfork.tiledgidbatch.globalid;
 
-import com.earlyfork.tiledgidbatch.pojos.TilesetChangeset;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -12,7 +12,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
 
 @Component
 public class GlobalIDController {
@@ -23,20 +23,20 @@ public class GlobalIDController {
     @Autowired
     NodesController nodesController;
 
-    public LinkedList<TilesetChangeset> updateGlobalIds(ArrayList<Document> docs) {
+    public Map<String, LinkedList<TilesetChangeset>> updateGlobalIds(ArrayList<Document> docs) {
 
-        LinkedList<TilesetChangeset> tilesetChangesetLinkedList = new LinkedList<TilesetChangeset>();
+        Map<String, LinkedList<TilesetChangeset>> tilesetChangesetHashMapWithLL = new HashMap<>();
 
         for (Document doc : docs) {
-            this.updateGlobalIdsInDoc(doc, tilesetChangesetLinkedList);
+            this.updateGlobalIdsInDoc(doc, tilesetChangesetHashMapWithLL);
             runningTotalGID += globalIdIncrement;
         }
 
-        return tilesetChangesetLinkedList;
+        return tilesetChangesetHashMapWithLL;
 
     }
 
-    private void updateGlobalIdsInDoc(Document doc, LinkedList<TilesetChangeset> tilesetChangesetLinkedList) {
+    private void updateGlobalIdsInDoc(Document doc, Map<String, LinkedList<TilesetChangeset>> tilesetChangesetHashMapWithLL) {
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         NodeList nodeListToUpdate = null;
@@ -68,9 +68,14 @@ public class GlobalIDController {
                 nextTileSetGID = "4294967295";
             }
 
+
             // saving off this change
             TilesetChangeset tilesetChangeset = new TilesetChangeset(Integer.valueOf(oldNodeValue), Integer.valueOf(nextTileSetGID), runningTotalGID);
-            tilesetChangesetLinkedList.add(tilesetChangeset);
+
+            // persist this change
+            String ownerDocument = nodeListToUpdate.item(0).getOwnerDocument().getDocumentURI();
+            tilesetChangesetHashMapWithLL.putIfAbsent(ownerDocument, new LinkedList<TilesetChangeset>());
+            tilesetChangesetHashMapWithLL.get(ownerDocument).add(tilesetChangeset);
 
             runningTotalGID += globalIdIncrement;
         }

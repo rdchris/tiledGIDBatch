@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Map;
 
 @SpringBootApplication
 public class TiledgidbatchApplication implements CommandLineRunner {
@@ -46,9 +47,9 @@ public class TiledgidbatchApplication implements CommandLineRunner {
         ArrayList<Document> documents = xmlFileIO.readInTMXFiles(tmxFiles);
 
         //update GIDs
-        LinkedList<TilesetChangeset> tilesetChangesets = globalIDController.updateGlobalIds(documents);
+        Map<String, LinkedList<TilesetChangeset>> tilesetChangesets = globalIDController.updateGlobalIds(documents);
 
-        nodesController.updateDataNodes(documents,tilesetChangesets);
+        //nodesController.updateDataNodes(documents,tilesetChangesets);
 
         // save files
         xmlFileIO.saveTMXFiles(tmxFiles,documents);

@@ -9,13 +9,15 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Map;
 
 @Component
 public class NodesController {
 
 
-    public void updateDataNodes(Document doc, LinkedList<TilesetChangeset> tilesetChangesets) {
+    public void updateDataNodes(ArrayList<Document> doc, Map<String, LinkedList<TilesetChangeset>> tilesetChangesets) {
 
         XPath xPath = XPathFactory.newInstance().newXPath();
 

@@ -5,14 +5,18 @@ import lombok.Data;
 @Data
 public class TilesetChangeset {
 
-    private int oldStartingGID;
-    private int oldnextGID;
-    private int incrementValue;
+    private int oldStartingGid;
+    private int oldnextGid;
+    private int newFirstGidValue;
 
 
-    public TilesetChangeset(int oldStartingGID, int oldnextGID, int incrementValue) {
-        this.oldStartingGID = oldStartingGID;
-        this.oldnextGID = oldnextGID;
-        this.incrementValue = incrementValue;
+    public TilesetChangeset(int oldFirstGid, int oldnextGid, int newFirstGidValue) {
+        this.oldStartingGid = oldFirstGid;
+        this.oldnextGid = oldnextGid;
+        this.newFirstGidValue = newFirstGidValue;
+    }
+
+    public int getGidDelta() {
+        return newFirstGidValue - oldnextGid;
     }
 }
