@@ -10,6 +10,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -17,19 +18,50 @@ import java.util.Map;
 public class NodesController {
 
 
-    public void updateDataNodes(ArrayList<Document> doc, Map<String, LinkedList<TilesetChangeset>> tilesetChangesets) {
+    public void updateDataNodes(ArrayList<Document> doc, Map<String, LinkedList<TilesetChangeset>> tilesetChangesetHashMap) {
 
+        for (Document document : doc) {
+            LinkedList<TilesetChangeset> tilesetChangesets = tilesetChangesetHashMap.get(document.getDocumentURI());
+            //this.clearMaps();
+            this.updateDataNodesPerDoc(document, tilesetChangesets);
+        }
+
+
+    }
+
+    private void updateDataNodesPerDoc(Document document, LinkedList<TilesetChangeset> tilesetChangesets) {
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         NodeList nodeListToUpdate = null;
         try {
-            nodeListToUpdate = (NodeList) xPath.compile("/map/layer/data").evaluate(doc, XPathConstants.NODESET);
+            nodeListToUpdate = (NodeList) xPath.compile("/map/layer/data").evaluate(document, XPathConstants.NODESET);
         } catch (XPathExpressionException e) {
             throw new RuntimeException(e);
         }
 
         for (int i = 0; i < nodeListToUpdate.getLength(); i++) {
-            nodeListToUpdate.item(i).getChildNodes().item(0).getNodeValue();
+            String nodeValue = nodeListToUpdate.item(i).getChildNodes().item(0).getNodeValue();
+            String[] splitDataValue = nodeValue.split(",");
+            Boolean[] booleanArray  = new Boolean[splitDataValue.length];
+
+            for (int ii = 0; ii < splitDataValue.length; ii++) {
+
+                int intDataValueToReview = Integer.parseInt(splitDataValue[ii]);
+
+                // we ignore zeros as they are nothing
+                if (intDataValueToReview >0) {
+                    Iterator<TilesetChangeset> iterator = tilesetChangesets.iterator();
+                    while (iterator.hasNext()) {
+                        TilesetChangeset next = iterator.next();
+                        next.getGidDelta();
+                        int oldnextGid = next.getOldnextGid();
+
+
+                    }
+                }
+
+            }
+
             // break into Arraylist
             // check to see if has been already updated
         }
