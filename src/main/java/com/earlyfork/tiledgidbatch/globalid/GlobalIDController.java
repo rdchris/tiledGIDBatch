@@ -1,5 +1,6 @@
 package com.earlyfork.tiledgidbatch.globalid;
 
+import com.earlyfork.tiledgidbatch.pojos.TilesetChangeset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -24,14 +25,14 @@ public class GlobalIDController {
 
     public void updateGlobalIds(ArrayList<Document> docs) {
 
-        LinkedList<TilesetChangeset> tilesetChangesetLinkedList = new LinkedList<TilesetChangeset>();
+
 
         for (Document doc : docs) {
             this.updateGlobalIdsInDoc(doc);
             runningTotalGID += globalIdIncrement;
         }
 
-        nodesController.updateDataNodes(doc, oldNodeValue, nextTileSetGID, runningTotalGID);
+        //nodesController.updateDataNodes(doc, oldNodeValue, nextTileSetGID, runningTotalGID);
 
     }
 
