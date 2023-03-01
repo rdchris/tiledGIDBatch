@@ -40,21 +40,32 @@ public class NodesController {
         }
 
         for (int i = 0; i < nodeListToUpdate.getLength(); i++) {
-            String nodeValue = nodeListToUpdate.item(i).getChildNodes().item(0).getNodeValue();
+            String nodeValue = nodeListToUpdate.item(i).getChildNodes().item(i).getNodeValue();
             String[] splitDataValue = nodeValue.split(",");
-            Boolean[] booleanArray  = new Boolean[splitDataValue.length];
+            Boolean[] booleanArray = new Boolean[splitDataValue.length];
 
             for (int ii = 0; ii < splitDataValue.length; ii++) {
 
                 int intDataValueToReview = Integer.parseInt(splitDataValue[ii]);
 
                 // we ignore zeros as they are nothing
-                if (intDataValueToReview >0) {
+                if (intDataValueToReview > 0) {
                     Iterator<TilesetChangeset> iterator = tilesetChangesets.iterator();
                     while (iterator.hasNext()) {
                         TilesetChangeset next = iterator.next();
-                        next.getGidDelta();
+
                         int oldnextGid = next.getOldnextGid();
+                        int newFirstGid = next.getNewFirstGidValue();
+
+                        if ((intDataValueToReview >= newFirstGid) && (intDataValueToReview > oldnextGid)) {
+                            if (booleanArray[ii] == null || booleanArray[ii] == false) {
+                                // We found where a change needs to be made!
+                                intDataValueToReview += next.getGidDelta();
+                                // prevent this data element from being changed again
+                                booleanArray[ii] = true;
+                                continue;
+                            }
+                        }
 
 
                     }
@@ -62,10 +73,18 @@ public class NodesController {
 
             }
 
+            StringBuilder sb = new StringBuilder();
+            for (String s : splitDataValue) {
+                sb.append(s).append(",");
+            }
+
+            // modify the node
+            nodeListToUpdate.item(i).getChildNodes().item(i).setNodeValue(sb.toString());
+
             // break into Arraylist
             // check to see if has been already updated
         }
 
-        System.out.println("Lets see");
+
     }
 }
