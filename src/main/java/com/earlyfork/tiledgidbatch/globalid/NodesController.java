@@ -30,18 +30,18 @@ public class NodesController {
     }
 
     private void updateDataNodesPerDoc(Document document, LinkedList<TilesetChangeset> tilesetChangesets) {
-        XPath xPath = XPathFactory.newInstance().newXPath();
 
-        NodeList nodeListToUpdate = null;
-        try {
-            nodeListToUpdate = (NodeList) xPath.compile("/map/layer/data").evaluate(document, XPathConstants.NODESET);
-        } catch (XPathExpressionException e) {
-            throw new RuntimeException(e);
-        }
+        // get the list of xml data nodes
+        NodeList nodeListToUpdate = this.getNodeListOfDataNodes(document);
 
+        // parse through all Data nodes
         for (int i = 0; i < nodeListToUpdate.getLength(); i++) {
             String nodeValue = nodeListToUpdate.item(i).getChildNodes().item(i).getNodeValue();
             String[] splitDataValue = nodeValue.split(",");
+
+            // determine how where the '/n' s need to go
+            int rowLengthFoData = this.countRowLengthOfData(splitDataValue);
+
             Boolean[] booleanArray = new Boolean[splitDataValue.length];
 
             for (int ii = 0; ii < splitDataValue.length; ii++) {
@@ -73,18 +73,36 @@ public class NodesController {
 
             }
 
-            StringBuilder sb = new StringBuilder();
-            for (String s : splitDataValue) {
-                sb.append(s).append(",");
-            }
+            String newNodeValue = this.convertStringArrayBackIntoNodeValue(splitDataValue);
+
 
             // modify the node
-            nodeListToUpdate.item(i).getChildNodes().item(i).setNodeValue(sb.toString());
+            nodeListToUpdate.item(i).getChildNodes().item(i).setNodeValue(newNodeValue);
 
             // break into Arraylist
             // check to see if has been already updated
         }
 
 
+    }
+
+    private String convertStringArrayBackIntoNodeValue(String[] splitDataValue) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : splitDataValue) {
+            sb.append(s).append(",");
+        }
+        return sb.toString();
+    }
+
+    private NodeList getNodeListOfDataNodes(Document document) {
+
+        XPath xPath = XPathFactory.newInstance().newXPath();
+        NodeList nodeListToUpdate = null;
+        try {
+            nodeListToUpdate = (NodeList) xPath.compile("/map/layer/data").evaluate(document, XPathConstants.NODESET);
+        } catch (XPathExpressionException e) {
+            throw new RuntimeException(e);
+        }
+        return nodeListToUpdate;
     }
 }

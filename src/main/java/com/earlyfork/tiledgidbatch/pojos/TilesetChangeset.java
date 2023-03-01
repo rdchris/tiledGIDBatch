@@ -19,4 +19,16 @@ public class TilesetChangeset {
     public int getGidDelta() {
         return newFirstGidValue - newFirstGidValue;
     }
+
+    public int getOldStartingGid() {
+        return oldStartingGid;
+    }
+
+    public int getOldnextGid() {
+        return oldnextGid;
+    }
+
+    public int getNewFirstGidValue() {
+        return newFirstGidValue;
+    }
 }
