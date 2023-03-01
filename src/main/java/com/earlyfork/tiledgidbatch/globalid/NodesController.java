@@ -36,6 +36,11 @@ public class NodesController {
 
         // parse through all Data nodes
         for (int i = 0; i < nodeListToUpdate.getLength(); i++) {
+
+            if (nodeListToUpdate.item(i).getChildNodes() == null) {
+                System.out.println("check this out");
+            }
+
             String nodeValue = nodeListToUpdate.item(i).getChildNodes().item(i).getNodeValue();
 
             // determine how where the '/n' s need to go
@@ -120,7 +125,9 @@ public class NodesController {
 
             // If every 17th row we need a new line, then if the index is mod 17
             // aka 17, 34 then add a new line
-            if (i % rowLengthFoData == 0) {
+            // NOTE mod 0 mod anything is always true
+            // note the reason we are adding +1 is because we are counting 0
+            if ((i + 1) % rowLengthFoData == 0) {
                 sb.append("\n");
             }
         }
