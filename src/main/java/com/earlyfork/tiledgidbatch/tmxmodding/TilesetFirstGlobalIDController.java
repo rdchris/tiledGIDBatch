@@ -1,4 +1,4 @@
-package com.earlyfork.tiledgidbatch.globalid;
+package com.earlyfork.tiledgidbatch.tmxmodding;
 
 
 import com.earlyfork.tiledgidbatch.pojos.TilesetChangeset;
@@ -18,13 +18,13 @@ import java.util.LinkedList;
 import java.util.Map;
 
 @Component
-public class GlobalIDController {
+public class TilesetFirstGlobalIDController {
 
     int runningTotalGID = 1;
     int globalIdIncrement = 15000;
 
     @Autowired
-    NodesController nodesController;
+    DataNodesController dataNodesController;
 
     public Map<String, LinkedList<TilesetChangeset>> updateGlobalIds(ArrayList<Document> docs) {
 

@@ -1,7 +1,7 @@
 package com.earlyfork.tiledgidbatch;
 
-import com.earlyfork.tiledgidbatch.globalid.GlobalIDController;
-import com.earlyfork.tiledgidbatch.globalid.NodesController;
+import com.earlyfork.tiledgidbatch.tmxmodding.TilesetFirstGlobalIDController;
+import com.earlyfork.tiledgidbatch.tmxmodding.DataNodesController;
 import com.earlyfork.tiledgidbatch.pojos.TilesetChangeset;
 import com.earlyfork.tiledgidbatch.xml.XmlFileIO;
 import org.apache.commons.io.FileUtils;
@@ -26,10 +26,10 @@ public class TiledgidbatchApplication implements CommandLineRunner {
     private XmlFileIO xmlFileIO;
 
     @Autowired
-    private GlobalIDController globalIDController;
+    private TilesetFirstGlobalIDController tilesetFirstGlobalIDController;
 
     @Autowired
-    private NodesController nodesController;
+    private DataNodesController dataNodesController;
 
     private String mapDirectory = "C:/s3Test/maps/active";
 
@@ -47,10 +47,10 @@ public class TiledgidbatchApplication implements CommandLineRunner {
         ArrayList<Document> documents = xmlFileIO.readInTMXFiles(tmxFiles);
 
         //update FirstGIDs
-        Map<String, LinkedList<TilesetChangeset>> tilesetChangesets = globalIDController.updateGlobalIds(documents);
+        Map<String, LinkedList<TilesetChangeset>> tilesetChangesets = tilesetFirstGlobalIDController.updateGlobalIds(documents);
 
         //update data values
-        nodesController.updateDataNodes(documents,tilesetChangesets);
+        dataNodesController.updateDataNodes(documents,tilesetChangesets);
 
         // save files
         xmlFileIO.saveTMXFiles(tmxFiles,documents);

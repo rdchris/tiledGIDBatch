@@ -1,4 +1,4 @@
-package com.earlyfork.tiledgidbatch.globalid;
+package com.earlyfork.tiledgidbatch.tmxmodding;
 
 import com.earlyfork.tiledgidbatch.pojos.TilesetChangeset;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 @Component
-public class NodesController {
+public class DataNodesController {
 
 
     public void updateDataNodes(ArrayList<Document> doc, Map<String, LinkedList<TilesetChangeset>> tilesetChangesetHashMap) {
@@ -37,8 +37,8 @@ public class NodesController {
         // parse through all Data nodes
         for (int i = 0; i < nodeListToUpdate.getLength(); i++) {
 
-            if (nodeListToUpdate.item(i).getChildNodes() == null) {
-                System.out.println("check this out");
+            if (nodeListToUpdate.item(i).getChildNodes().item(i) == null) {
+                throw new RuntimeException(document.getDocumentURI() + " had a null node on " + i);
             }
 
             String nodeValue = nodeListToUpdate.item(i).getChildNodes().item(i).getNodeValue();
