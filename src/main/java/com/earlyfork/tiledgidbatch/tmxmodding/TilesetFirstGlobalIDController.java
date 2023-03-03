@@ -54,7 +54,7 @@ public class TilesetFirstGlobalIDController {
             return;
         }
 
-
+        // loop through, updating all nodes under map/tileset
         for (int i = 0; i < nodeListToUpdate.getLength(); i++) {
 
             if (nodeListToUpdate.item(i) == null) {

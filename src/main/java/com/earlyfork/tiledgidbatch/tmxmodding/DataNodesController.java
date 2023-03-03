@@ -37,11 +37,11 @@ public class DataNodesController {
         // parse through all Data nodes
         for (int i = 0; i < nodeListToUpdate.getLength(); i++) {
 
-            if (nodeListToUpdate.item(i).getChildNodes().item(i) == null) {
-                throw new RuntimeException(document.getDocumentURI() + " had a null node on " + i);
-            }
+//            if (nodeListToUpdate.item(i).getChildNodes().item(0) == null) {
+//                throw new RuntimeException(document.getDocumentURI() + " had a null node on " + i);
+//            }
 
-            String nodeValue = nodeListToUpdate.item(i).getChildNodes().item(i).getNodeValue();
+            String nodeValue = nodeListToUpdate.item(i).getChildNodes().item(0).getNodeValue();
 
             // determine how where the '/n' s need to go
             String[] splitDataValue = nodeValue.split(",");
@@ -84,7 +84,7 @@ public class DataNodesController {
             String newNodeValue = this.convertStringArrayBackIntoNodeValue(splitDataValue, rowLengthFoData);
 
             // modify the node
-            nodeListToUpdate.item(i).getChildNodes().item(i).setNodeValue(newNodeValue);
+            nodeListToUpdate.item(i).getChildNodes().item(0).setNodeValue(newNodeValue);
 
             // break into Arraylist
             // check to see if has been already updated
